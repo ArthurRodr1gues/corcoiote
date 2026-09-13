@@ -23,5 +23,7 @@ export function getUserById(request: Request, response: Response) {
 export function createUser(request: Request, response: Response) {
   const { name, email, password } = request.body as CreateUser;
 
-  insertUser({ name, email, password });
+  const user = insertUser({ name, email, password });
+
+  response.status(201).json(user);
 }
