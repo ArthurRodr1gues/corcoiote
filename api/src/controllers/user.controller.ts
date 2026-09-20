@@ -2,9 +2,11 @@ import type { Request, Response } from 'express';
 import {
   findAllUsers,
   findUserById,
-  insertUser
+  insertUser,
+  modifyUser,
+  removeUser
 } from '../services/user.service.ts';
-import type { CreateUser } from '../types/user.type.ts';
+import type { CreateUser, UpdateUser } from '../types/user.type.ts';
 
 export function getAllUsers(request: Request, response: Response) {
   const users = findAllUsers();
@@ -26,4 +28,21 @@ export function createUser(request: Request, response: Response) {
   const user = insertUser({ name, email, password });
 
   response.status(201).json(user);
+}
+
+export function updateUser(request: Request, response: Response) {
+  const id = +request.params.id;
+  const data = request.body as UpdateUser;
+
+  const user = modifyUser(id, data);
+
+  response.status(200).json(user);
+}
+
+export function deleteUser(request: Request, response: Response) {
+  const id = +request.params.id;
+
+  removeUser(id);
+
+  response.status(204).send();
 }
